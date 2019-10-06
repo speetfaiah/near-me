@@ -14,4 +14,9 @@
     <ProjectReference Include="..\Pet.VkApi\Pet.VkApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
