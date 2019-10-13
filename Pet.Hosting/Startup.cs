@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Pet.Hosting.Models;
-using Pet.VkApi.Interfaces;
-using Pet.VkApi.Services;
-using System;
+using Pet.Hosting.Configs;
+using Pet.Hosting.Interfaces;
+using Pet.Hosting.Implemetations;
+using Pet.Services.Implemetations;
+using Pet.Services.Interfaces;
 
 namespace Pet.Hosting
 {
@@ -18,27 +19,17 @@ namespace Pet.Hosting
             _configuration = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json")
                 .Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var vkConfig = _configuration.GetSection("vk").Get<VkConfig>();
- 
-            services.AddSingleton<IMessageService, MessageService>();
+            var dataServiceConfig = new DataServiceConfig();
+            _configuration.Bind("dataServiceConfig", dataServiceConfig);
 
-            services.AddHttpClient<BaseService>(h =>
-            {
-                h.BaseAddress = new Uri(vkConfig.ApiUrl);
-                h.Timeout = TimeSpan.FromSeconds(vkConfig.Timeout);
-            });
-
-            services.AddSingleton<IAuthService, AuthService>();
-            services.AddHttpClient<AuthService>(h =>
-            {
-                h.BaseAddress = new Uri(vkConfig.OauthUrl);
-                h.Timeout = TimeSpan.FromSeconds(vkConfig.Timeout);
-            });
+            services.AddSingleton<IDataService, DataService>();
+            services.AddSingleton<IVkService>(new VkService(dataServiceConfig.VkConfig));
 
             services.AddMvc();
         }

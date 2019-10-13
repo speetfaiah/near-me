@@ -11,12 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pet.VkApi\Pet.VkApi.csproj" />
+    <Folder Include="Models\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\Pet.Services\Pet.Services.csproj" />
   </ItemGroup>
 
 </Project>
