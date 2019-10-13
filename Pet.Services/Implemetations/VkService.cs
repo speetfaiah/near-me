@@ -1,24 +1,22 @@
 ﻿using Pet.Services.Configs;
 using Pet.Services.Interfaces;
-using System;
-using System.Net.Http;
+using Pet.Services.Models.Base;
+using System.Threading.Tasks;
 
 namespace Pet.Services.Implemetations
 {
-    public class VkService : IVkService
+    public class VkService : BaseApiService, IVkService
     {
-        private readonly HttpClient _httpClient;
-
         private readonly string _accessToken;
 
-        public VkService(VkConfig config)
+        public VkService(VkConfig config) : base(config)
         {
-            _httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(config.BaseUrl),
-                Timeout = TimeSpan.FromSeconds(config.Timeout)
-            };
             _accessToken = config.AccessToken;
         }
+
+        public async Task<ServiceResult<object>> GetPhotosAsync() =>
+            await GetDataAsync<object>("photos.search", AccessTokenParam);
+
+        private ApiParam AccessTokenParam => new ApiParam("access_token", _accessToken, UsageFlags.Query);
     }
 }
