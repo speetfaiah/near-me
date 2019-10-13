@@ -3,5 +3,7 @@
     public class VkConfig : BaseApiConfig
     {
         public string AccessToken { get; set; }
+
+        public string Version { get; set; }
     }
 }

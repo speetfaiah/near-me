@@ -22,41 +22,25 @@ namespace Pet.Services.Implemetations
             };
         }
 
-        public async Task<ServiceResult<T>> GetDataAsync<T>(string url, params ApiParam[] apiParams)
+        public async Task<T> GetDataAsync<T>(string url, params ApiParam[] apiParams)
         {
-            try
+            var requestMessage = GetRequestMessage(url, apiParams);
+            using (var response = await _httpClient.SendAsync(requestMessage))
             {
-                var requestMessage = GetRequestMessage(url, apiParams);
-                using (var response = await _httpClient.SendAsync(requestMessage))
+                if (response.IsSuccessStatusCode)
                 {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var content = await response.Content.ReadAsStringAsync();
-                        return new ServiceResult<T>
-                        {
-                            Data = JsonConvert.DeserializeObject<T>(content)
-                        };
-                    }
-
-                    return new ServiceResult<T>
-                    {
-                        Error = new ErrorMeta("bad api request status", (int)response.StatusCode)
-                    };
+                    var content = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T>(content);
                 }
-            }
-            catch (Exception ex)
-            {
-                return new ServiceResult<T>
-                {
-                    Error = new ErrorMeta(ex.Message)
-                };
+
+                throw new Exception("bad api request status {content}");
             }
         }
 
         private HttpRequestMessage GetRequestMessage(string url, params ApiParam[] apiParams)
         {
             var getParams = apiParams.Where(x => x.IsOk && x.Usage == UsageFlags.Query)
-                .Select(x => $"{HttpUtility.UrlEncode(x.Key)}={HttpUtility.UrlEncode(x.Value)}")
+                .Select(x => $"{HttpUtility.UrlEncode(x.Key)}={HttpUtility.UrlEncode(x.Value.ToString())}")
                 .ToArray();
 
             var resultUriString = url +
@@ -67,11 +51,11 @@ namespace Pet.Services.Implemetations
             var message = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri(resultUriString)
+                RequestUri = new Uri(resultUriString, UriKind.Relative)
             };
 
             foreach (var header in apiParams.Where(x => x.IsOk && x.Usage == UsageFlags.Header))
-                message.Headers.Add(header.Key, header.Value);
+                message.Headers.Add(header.Key, header.Value.ToString());
 
             return message;
         }

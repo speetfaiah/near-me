@@ -31,7 +31,8 @@ namespace Pet.Hosting
             services.AddSingleton<IDataService, DataService>();
             services.AddSingleton<IVkService>(new VkService(dataServiceConfig.VkConfig));
 
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(x => x.UseCamelCasing(true));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -40,7 +41,17 @@ namespace Pet.Hosting
                 app.UseDeveloperExceptionPage();
 
             app.UseStaticFiles();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    "default",
+                    "{controller}/{action}",
+                    new
+                    {
+                        controller = "Main",
+                        action = "Index"
+                    });
+            });
         }
     }
 }

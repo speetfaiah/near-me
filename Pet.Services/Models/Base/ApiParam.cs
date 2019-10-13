@@ -4,7 +4,7 @@ namespace Pet.Services.Models.Base
 {
     public class ApiParam
     {
-        public ApiParam(string key, string value, UsageFlags usage)
+        public ApiParam(string key, object value, UsageFlags usage = UsageFlags.Query)
         {
             Key = key;
             Value = value;
@@ -13,11 +13,11 @@ namespace Pet.Services.Models.Base
 
         public string Key { get; protected set; }
 
-        public string Value { get; protected set; }
+        public object Value { get; protected set; }
 
         public UsageFlags Usage { get; protected set; }
 
-        public bool IsOk => !string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(Value);
+        public bool IsOk => !string.IsNullOrEmpty(Key) && Value != null;
     }
 
     [Flags]

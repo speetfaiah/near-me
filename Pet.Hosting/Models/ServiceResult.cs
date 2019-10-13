@@ -1,4 +1,4 @@
-﻿namespace Pet.Services.Models.Base
+﻿namespace Pet.Hosting.Models
 {
     public class ServiceResult<T>
     {
