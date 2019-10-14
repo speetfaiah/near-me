@@ -11,10 +11,12 @@ namespace Pet.Hosting.Implemetations
     public class DataService : IDataService
     {
         private readonly IVkService _vkService;
+        private readonly IFlickrService _flickrService;
 
-        public DataService(IVkService vkService)
+        public DataService(IVkService vkService, IFlickrService flickrService)
         {
             _vkService = vkService;
+            _flickrService = flickrService;
         }
 
         public async Task<ServiceResult<VkPhotoList>> GetVkPhotosAsync(decimal lat, decimal @long, long offset, int count, int radius)

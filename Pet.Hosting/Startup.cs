@@ -30,6 +30,7 @@ namespace Pet.Hosting
 
             services.AddSingleton<IDataService, DataService>();
             services.AddSingleton<IVkService>(new VkService(dataServiceConfig.VkConfig));
+            services.AddSingleton<IFlickrService>(new FlickrService(dataServiceConfig.FlickrConfig));
 
             services.AddMvc()
                 .AddJsonOptions(x => x.UseCamelCasing(true));

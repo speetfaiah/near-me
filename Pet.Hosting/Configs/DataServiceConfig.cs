@@ -5,5 +5,7 @@ namespace Pet.Hosting.Configs
     public class DataServiceConfig
     {
         public VkConfig VkConfig { get; set; }
+
+        public FlickrConfig FlickrConfig { get; set; }
     }
 }
