@@ -39,19 +39,12 @@ namespace Pet.Hosting
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
+            else
+                app.UseStatusCodePagesWithRedirects("/Error?code={0}");
 
             app.UseStaticFiles();
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    "default",
-                    "{controller}/{action}",
-                    new
-                    {
-                        controller = "Main",
-                        action = "Index"
-                    });
-            });
+
+            app.UseMvc();
         }
     }
 }
