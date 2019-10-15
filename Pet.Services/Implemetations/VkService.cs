@@ -17,11 +17,10 @@ namespace Pet.Services.Implemetations
             _version = config.Version;
         }
 
-        public async Task<BaseItemListResponse<PhotoInfo>> GetPhotosAsync(
-            decimal lat, decimal @long, long offset, int count, int radius) =>
+        public async Task<BaseItemListResponse<PhotoInfo>> GetPhotosAsync(decimal lat, decimal lon, int count, long offset, int radius) =>
             await GetDataAsync<BaseItemListResponse<PhotoInfo>>("photos.search", 
-                new ApiParam("lat", lat.ToString("")),
-                new ApiParam("long", @long.ToString("")),
+                new ApiParam("lat", lat),
+                new ApiParam("long", lon),
                 new ApiParam("offset", offset),
                 new ApiParam("count", count),
                 new ApiParam("radius", radius),

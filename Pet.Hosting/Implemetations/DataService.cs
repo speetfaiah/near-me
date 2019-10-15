@@ -1,6 +1,6 @@
 ﻿using Pet.Hosting.Interfaces;
+using Pet.Hosting.Mappers;
 using Pet.Hosting.Models;
-using Pet.Services.Helpers;
 using Pet.Services.Interfaces;
 using System;
 using System.Linq;
@@ -19,34 +19,61 @@ namespace Pet.Hosting.Implemetations
             _flickrService = flickrService;
         }
 
-        public async Task<ServiceResult<VkPhotoList>> GetVkPhotosAsync(decimal lat, decimal @long, long offset, int count, int radius)
+        public async Task<ServiceResult<PhotoList>> GetVkPhotosAsync(PhotosRequest photosRequest)
         {
             try
             {
-                var vkPhotos = await _vkService.GetPhotosAsync(lat, @long, offset, count, radius);
-                var data = new VkPhotoList
+                var offset = photosRequest.Page * photosRequest.Count;
+                var vkPhotos = await _vkService.GetPhotosAsync(
+                    photosRequest.Lat, 
+                    photosRequest.Lon, 
+                    photosRequest.Count,
+                    offset,
+                    photosRequest.Radius);
+                return new ServiceResult<PhotoList>
                 {
-                    Count = vkPhotos.Response.Count,
-                    Items = vkPhotos.Response.Items.Select(x => new VkPhoto
+                    Data = new PhotoList
                     {
-                        Date = DateTimeHelper.ConvertFromUnixTimestamp(x.Date),
-                        Description = x.Text,
-                        Lat = x.Lat,
-                        Long = x.Long,
-                        VkUrl = x.VkUrl,
-                        SmallPhotoUrl = x.AllPhotosAsc.FirstOrDefault(),
-                        BigPhotoUrl = x.AllPhotosAsc.LastOrDefault()
-                    }).ToArray()
-                };
-
-                return new ServiceResult<VkPhotoList>
-                {
-                    Data = data
+                        HasPhotosYet = vkPhotos.Response.Count > offset + vkPhotos.Response.Items.Count,
+                        Items = vkPhotos.Response.Items
+                            .Select(PhotoMapper.FromVk)
+                            .ToArray()
+                    }
                 };
             }
             catch (Exception ex)
             {
-                return new ServiceResult<VkPhotoList>
+                return new ServiceResult<PhotoList>
+                {
+                    Error = new ErrorMeta(ex.Message)
+                };
+            }
+        }
+
+        public async Task<ServiceResult<PhotoList>> GetFlickrPhotosAsync(PhotosRequest photosRequest)
+        {
+            try
+            {
+                var flickrPhotos = await _flickrService.GetPhotosAsync(
+                    photosRequest.Lat,
+                    photosRequest.Lon,
+                    photosRequest.Page,
+                    photosRequest.Count,
+                    photosRequest.Radius / 1000);
+                return new ServiceResult<PhotoList>
+                {
+                    Data = new PhotoList
+                    {
+                        HasPhotosYet = flickrPhotos.Photos.Page != flickrPhotos.Photos.Pages,
+                        Items = flickrPhotos.Photos.Items
+                            .Select(PhotoMapper.FromFlickr)
+                            .ToArray()
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult<PhotoList>
                 {
                     Error = new ErrorMeta(ex.Message)
                 };

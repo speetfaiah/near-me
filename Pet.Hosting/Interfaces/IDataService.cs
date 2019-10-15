@@ -5,6 +5,8 @@ namespace Pet.Hosting.Interfaces
 {
     public interface IDataService
     {
-        Task<ServiceResult<VkPhotoList>> GetVkPhotosAsync(decimal lat, decimal @long, long offset, int count, int radius);
+        Task<ServiceResult<PhotoList>> GetVkPhotosAsync(PhotosRequest photosRequest);
+
+        Task<ServiceResult<PhotoList>> GetFlickrPhotosAsync(PhotosRequest photosRequest);
     }
 }

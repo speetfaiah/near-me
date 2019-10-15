@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pet.Hosting.Interfaces;
+using Pet.Hosting.Models;
 using System.Threading.Tasks;
 
 namespace Pet.Hosting.Controllers
@@ -14,11 +15,19 @@ namespace Pet.Hosting.Controllers
             _dataService = dataService;
         }
 
-        [HttpGet]
-        [Route("vkphotos")]
-        public async Task<JsonResult> VkPhotos(decimal lat, decimal @long, long offset, int count, int radius)
+        [HttpPost]
+        [Route("vk")]
+        public async Task<JsonResult> VkPhotos(PhotosRequest photosRequest)
         {
-            var data = await _dataService.GetVkPhotosAsync(lat, @long, offset, count, radius);
+            var data = await _dataService.GetVkPhotosAsync(photosRequest);
+            return Json(data);
+        }
+
+        [HttpPost]
+        [Route("flickr")]
+        public async Task<JsonResult> FlickrPhotos(PhotosRequest photosRequest)
+        {
+            var data = await _dataService.GetFlickrPhotosAsync(photosRequest);
             return Json(data);
         }
     }

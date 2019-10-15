@@ -5,6 +5,6 @@ namespace Pet.Services.Interfaces
 {
     public interface IVkService
     {
-        Task<BaseItemListResponse<PhotoInfo>> GetPhotosAsync(decimal lat, decimal @long, long offset, int count, int radius);
+        Task<BaseItemListResponse<PhotoInfo>> GetPhotosAsync(decimal lat, decimal lon, int count, long offset, int radius);
     }
 }
