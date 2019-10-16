@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Pet.Hosting.Configs;
 using Pet.Hosting.Interfaces;
 using Pet.Hosting.Implemetations;
 using Pet.Services.Implemetations;
 using Pet.Services.Interfaces;
+using Pet.Hosting.Models;
+using Pet.Services.Models.Vk;
+using Pet.Services.Models.Flickr;
 
 namespace Pet.Hosting
 {
@@ -25,12 +27,13 @@ namespace Pet.Hosting
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var dataServiceConfig = new DataServiceConfig();
-            _configuration.Bind("dataServiceConfig", dataServiceConfig);
+            services.Configure<FrontConfig>(_configuration.GetSection("frontConfig"));
+            services.Configure<VkConfig>(_configuration.GetSection("vkConfig"));
+            services.Configure<FlickrConfig>(_configuration.GetSection("flickrConfig"));
 
             services.AddSingleton<IDataService, DataService>();
-            services.AddSingleton<IVkService>(new VkService(dataServiceConfig.VkConfig));
-            services.AddSingleton<IFlickrService>(new FlickrService(dataServiceConfig.FlickrConfig));
+            services.AddSingleton<IVkService, VkService>();
+            services.AddSingleton<IFlickrService, FlickrService>();
 
             services.AddMvc()
                 .AddJsonOptions(x => x.UseCamelCasing(true));

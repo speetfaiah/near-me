@@ -1,4 +1,4 @@
-﻿using Pet.Services.Configs;
+﻿using Microsoft.Extensions.Options;
 using Pet.Services.Interfaces;
 using Pet.Services.Models.Base;
 using Pet.Services.Models.Flickr;
@@ -10,9 +10,9 @@ namespace Pet.Services.Implemetations
     {
         private readonly string _apiKey;
 
-        public FlickrService(FlickrConfig config) : base(config)
+        public FlickrService(IOptions<FlickrConfig> options) : base(options.Value)
         {
-            _apiKey = config.ApiKey;
+            _apiKey = options.Value.ApiKey;
         }
 
         public async Task<PhotoSearchResponse> GetPhotosAsync(decimal lat, decimal lon, int page, int perPage, int radius) =>

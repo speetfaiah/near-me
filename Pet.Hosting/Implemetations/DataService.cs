@@ -25,8 +25,8 @@ namespace Pet.Hosting.Implemetations
             {
                 var offset = photosRequest.Page * photosRequest.Count;
                 var vkPhotos = await _vkService.GetPhotosAsync(
-                    photosRequest.Lat, 
-                    photosRequest.Lon, 
+                    photosRequest.Lat,
+                    photosRequest.Lon,
                     photosRequest.Count,
                     offset,
                     photosRequest.Radius);

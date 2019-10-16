@@ -1,4 +1,4 @@
-﻿using Pet.Services.Configs;
+﻿using Microsoft.Extensions.Options;
 using Pet.Services.Interfaces;
 using Pet.Services.Models.Base;
 using Pet.Services.Models.Vk;
@@ -11,10 +11,10 @@ namespace Pet.Services.Implemetations
         private readonly string _accessToken;
         private readonly string _version;
 
-        public VkService(VkConfig config) : base(config)
+        public VkService(IOptions<VkConfig> options) : base(options.Value)
         {
-            _accessToken = config.AccessToken;
-            _version = config.Version;
+            _accessToken = options.Value.AccessToken;
+            _version = options.Value.Version;
         }
 
         public async Task<BaseItemListResponse<PhotoInfo>> GetPhotosAsync(decimal lat, decimal lon, int count, long offset, int radius) =>

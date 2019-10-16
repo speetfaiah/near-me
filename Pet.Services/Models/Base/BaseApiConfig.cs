@@ -1,4 +1,4 @@
-﻿namespace Pet.Services.Configs
+﻿namespace Pet.Services.Models.Base
 {
     public class BaseApiConfig
     {

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Pet.Services.Configs;
 using Pet.Services.Models.Base;
 using System;
 using System.Linq;
