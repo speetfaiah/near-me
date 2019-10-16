@@ -42,7 +42,10 @@ namespace Pet.Hosting
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
+                app.UseWebpackDevMiddleware();
+            }
             else
                 app.UseStatusCodePagesWithRedirects("/Error?code={0}");
 
