@@ -1,9 +1,7 @@
 ﻿@page
 @model Pet.Hosting.Pages.IndexModel
 @{
-
+    ViewBag.RenderReact = true;
 }
 
-<div id="content">
-</div>
-<script type="text/javascript" src="@Url.Content("~/assets/bundle.js")"></script>
+<div id="react-container"></div>
