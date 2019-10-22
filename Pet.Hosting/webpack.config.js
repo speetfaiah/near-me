@@ -8,7 +8,7 @@ const srcFolder = "./App/";
 
 module.exports = {
     entry: [
-        srcFolder + "Index.jsx"
+        srcFolder + "App.jsx"
     ],
     devtool: "source-map",
     output: {

@@ -17,7 +17,7 @@ namespace Pet.Hosting.Controllers
 
         [HttpPost]
         [Route("vk")]
-        public async Task<JsonResult> VkPhotos(PhotosRequest photosRequest)
+        public async Task<JsonResult> VkPhotos([FromBody] PhotosRequest photosRequest)
         {
             var data = await _dataService.GetVkPhotosAsync(photosRequest);
             return Json(data);
@@ -25,7 +25,7 @@ namespace Pet.Hosting.Controllers
 
         [HttpPost]
         [Route("flickr")]
-        public async Task<JsonResult> FlickrPhotos(PhotosRequest photosRequest)
+        public async Task<JsonResult> FlickrPhotos([FromBody] PhotosRequest photosRequest)
         {
             var data = await _dataService.GetFlickrPhotosAsync(photosRequest);
             return Json(data);
