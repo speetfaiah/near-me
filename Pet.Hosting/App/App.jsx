@@ -4,5 +4,5 @@ import Index from './pages/Index.jsx';
 
 render(
     <Index />,
-    document.getElementById('react-container')
+    document.getElementById('app-container')
 );
