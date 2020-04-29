@@ -1,33 +1,31 @@
-﻿'use strict';
-
-const webpack = require('webpack');
-const path = require('path');
+﻿var path = require('path')
+const VueLoaderPlugin = require('vue-loader/lib/plugin'); // плагин для загрузки кода Vue
 
 const bundleFolder = "./wwwroot/assets/";
 const srcFolder = "./App/";
 
 module.exports = {
-    entry: [
-        srcFolder + "App.jsx"
-    ],
-    devtool: "source-map",
+    entry: srcFolder + 'main.js',
     output: {
-        filename: "bundle.js",
+        path: path.resolve(__dirname, bundleFolder),
         publicPath: 'assets/',
-        path: path.resolve(__dirname, bundleFolder)
+        filename: 'bundle.js'
     },
     module: {
         rules: [
             {
-                test: /\.jsx$/,
-                exclude: /(node_modules)/,
-                loader: "babel-loader",
-                query: {
-                    presets: ["es2015", "stage-0", "react"]
-                }
+                test: /\.vue$/,
+                loader: 'vue-loader'
+            }, {
+                test: /\.css$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader'
+                ]
             }
         ]
     },
     plugins: [
+        new VueLoaderPlugin()
     ]
-};
+}
