@@ -1,16 +1,10 @@
-﻿//import Vue from 'vue'
-
-export default {
-    increment(state) {
-        state.count++
+﻿export default {
+    updateStateProp(state, prop) {
+        state[prop.name] = prop.value;
+    },
+    search(state, payload) {
+        state.photos.push(...payload.data.items);
+        state.loadYet = payload.data.hasPhotosYet;
+        state.page++;
     }
 }
-
-/*function createThread(state, id, name) {
-    Vue.set(state.threads, id, {
-        id,
-        name,
-        messages: [],
-        lastMessage: null
-    })
-}*/

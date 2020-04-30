@@ -25,11 +25,6 @@
             'search': Search,
             'ya-map': Map,
             'list': List
-        },
-        data() {
-            return {
-                message: 'Welcome to Vue.js'
-            }
         }
     }
 </script>
