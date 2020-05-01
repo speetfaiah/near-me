@@ -1,20 +1,29 @@
 ﻿<template>
     <div>
         <div class="message-section">
-            <img v-for="image in $store.state.photos" :src="image.smallPhotoUrl" :alt="image.description" />
+            <img v-for="image in photos" :src="image.smallPhotoUrl" :alt="image.description" />
         </div>
-        <button v-if="$store.state.loadYet" @click="loadYet">Yet!</button>
+        <button v-if="loadYet" @click="searchSubmit">Yet!</button>
     </div>
 </template>
 
 <script>
-    import { mapActions, mapGetters } from 'vuex'
+    import { mapActions, mapState } from 'vuex'
 
     export default {
         name: 'List',
+        computed: mapState({
+            lat: state => state.lat,
+            lon: state => state.lon,
+            count: state => state.count,
+            page: state => state.page,
+            radius: state => state.radius,
+            loadYet: state => state.loadYet,
+            photos: state => state.photos
+        }),
         methods: {
             ...mapActions({
-                loadYet: 'search'
+                search: 'search'
             }),
             searchSubmit: function (e) {
                 e.preventDefault();
@@ -23,7 +32,8 @@
                     lon: this.lon,
                     count: this.count,
                     page: this.page,
-                    radius: this.radius
+                    radius: this.radius,
+                    loadYet: this.loadYet
                 });
             }
         }

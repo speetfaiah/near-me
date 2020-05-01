@@ -1,5 +1,5 @@
 ﻿<template>
-    <div className="container">
+    <div class="container">
         <form @submit="searchSubmit">
             <p>
                 <label>Lat:</label><br />
@@ -27,17 +27,21 @@
 </template>
 
 <script>
-    import { mapActions, mapGetters } from 'vuex'
+    import { mapActions, mapState } from 'vuex'
 
     export default {
         name: 'Search',
         computed: {
+            ...mapState({
+                loadYet: state => state.loadYet,
+                page: state => state.page
+            }),
             lat: {
                 get() {
                     return this.$store.state.lat
                 },
                 set(value) {
-                    updateStateProp({ name: 'lat', value: value })
+                    this.updateStateProp({ name: 'lat', value: value })
                 }
             },
             lon: {
@@ -45,7 +49,7 @@
                     return this.$store.state.lon
                 },
                 set(value) {
-                    updateStateProp({ name: 'lon', value: value })
+                    this.updateStateProp({ name: 'lon', value: value })
                 }
             },
             count: {
@@ -53,7 +57,7 @@
                     return this.$store.state.count
                 },
                 set(value) {
-                    updateStateProp({ name: 'count', value: value })
+                    this.updateStateProp({ name: 'count', value: value })
                 }
             },
             radius: {
@@ -61,7 +65,7 @@
                     return this.$store.state.radius
                 },
                 set(value) {
-                    updateStateProp({ name: 'radius', value: value })
+                    this.updateStateProp({ name: 'radius', value: value })
                 }
             }
         },
@@ -77,7 +81,8 @@
                     lon: this.lon,
                     count: this.count,
                     page: this.page,
-                    radius: this.radius
+                    radius: this.radius,
+                    loadYet: this.loadYet
                 });
             }
         }

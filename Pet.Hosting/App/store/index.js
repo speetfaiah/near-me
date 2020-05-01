@@ -22,7 +22,7 @@ const state = {
              smallPhotoUrl: "",
              bigPhotoUrl: "" 
         } */ ],
-    loadYet: true
+    loadYet: false
 }
 
 export default new Vuex.Store({

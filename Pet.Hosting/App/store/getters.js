@@ -1,1 +1,1 @@
-﻿export const evenOrOdd = state => state.count % 2 === 0 ? 'even' : 'odd';
+﻿export const needUpdateMap = state => state.lat + state.lon + state.radius;;

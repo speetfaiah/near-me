@@ -9,7 +9,10 @@ export const search = ({ commit }, payload) => {
         page: payload.page
     })
         .then(function (response) {
-            commit('search', response.data);
+            commit('search', {
+                ...response.data,
+                newSearch: !payload.loadYet
+            });
         })
         .catch(function (error) {
             console.log(error);

@@ -8,6 +8,8 @@ namespace Pet.Hosting.Pages
     {
         private readonly FrontConfig _frontConfig;
 
+        public string ApiKey => _frontConfig.YandexApiKey;
+
         public IndexModel(IOptions<FrontConfig> options)
         {
             _frontConfig = options.Value;
