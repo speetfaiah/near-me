@@ -17,7 +17,7 @@ namespace Pet.Hosting.Models
 
         public decimal Lat { get; set; }
 
-        public decimal Long { get; set; }
+        public decimal Lon { get; set; }
 
         public string SiteUrl { get; set; }
 

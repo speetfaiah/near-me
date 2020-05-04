@@ -20,6 +20,11 @@
 
     export default {
         name: 'Map',
+        data: function () {
+            return {
+                map: null
+            }
+        },
         computed:
         {
             ...mapState({
@@ -39,8 +44,28 @@
             initMap: function () {
                 var self = this;
                 ymaps.ready(function () {
-                    init(self.lat, self.lon, self.radius, self.photos);
+                    self.map = new ymaps.Map("map", {
+                        center: [self.lat, self.lon],
+                        zoom: 10
+                    });
                 });
+            },
+            updateMap: function () {
+                this.map.setCenter([this.lat, this.lon]);
+            },
+            updatePoints: function () {
+                if (this.photos) {
+                    var placemarkCollection = new ymaps.GeoObjectCollection(null, {
+                        preset: 'islands#greenDotIconWithCaption'
+                    });
+
+                    for (var i = 0; i < this.photos.length; i++) {
+                        var placemark = mapPhotoToPlacemark(this.photos[i]);
+                        placemarkCollection.add(placemark);
+                    }
+
+                    this.map.geoObjects.add(placemarkCollection);
+                }
             }
         },
         mounted: function () {
@@ -50,32 +75,29 @@
         },
         watch: {
             needUpdateMap(newValue, oldValue) {
-                console.log(`Updating needMapUpdate from ${oldValue} to ${newValue}`);
-                this.initMap();
+                this.updateMap();
+            },
+            photos(newValue, oldValue) {
+                this.updatePoints();
             }
         }
     }
 
-    function init(lat, lon, radius, photos) {
-        var myMap = new ymaps.Map("map", {
-            center: [lat, lon],
-            zoom: 10
-        });
-
-        myMap.geoObjects
-            .add(new ymaps.Placemark([55.782392, 37.614924], {
-                balloonContent: 'цвет <strong>детской неожиданности</strong>',
-                iconCaption: 'Очень длиннный, но невероятно интересный текст'
-            }, {
-                preset: 'islands#circleDotIcon',
-                iconColor: 'yellow',
-                iconCaptionMaxWidth: '50'
-            }))
-            .add(new ymaps.Placemark([55.694843, 37.435023], {
-                balloonContent: 'цвет <strong>носика Гены</strong>',
-                iconCaption: 'Очень длиннный, но невероятно интересный текст'
-            }, {
-                preset: 'islands#greenDotIconWithCaption'
-            }));
+    function mapPhotoToPlacemark(photo) {
+        /* {
+     description: "",
+     date: "",
+     lat: 0,
+     lon: 0,
+     siteUrl: "",
+     smallPhotoUrl: "",
+     bigPhotoUrl: ""
+    } */
+        return new ymaps.Placemark([photo.lat, photo.lon], {
+            balloonContent: '<a href="' + photo.siteUrl + '"><img src="' + photo.smallPhotoUrl + '" /></a>',
+            iconCaption: photo.description
+        }, {
+            preset: 'islands#greenDotIconWithCaption'
+        })
     }
 </script>

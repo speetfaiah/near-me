@@ -34,7 +34,7 @@ namespace Pet.Hosting.Mappers
                 Date = ConvertFromUnixTimestamp(vkPhoto.Date),
                 Description = vkPhoto.Text,
                 Lat = vkPhoto.Lat,
-                Long = vkPhoto.Long,
+                Lon = vkPhoto.Long,
                 SiteUrl = $"https://vk.com/photo{vkPhoto.OwnerId}_{vkPhoto.Id}",
                 SmallPhotoUrl = allPhotosAsc.FirstOrDefault(),
                 BigPhotoUrl = allPhotosAsc.LastOrDefault()

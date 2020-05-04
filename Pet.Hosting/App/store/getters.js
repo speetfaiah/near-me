@@ -1,1 +1,1 @@
-﻿export const needUpdateMap = state => state.lat + state.lon + state.radius;;
+﻿export const needUpdateMap = state => state.lat + state.lon + state.radius;
