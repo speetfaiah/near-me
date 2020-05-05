@@ -27,12 +27,12 @@
         },
         computed:
         {
-            ...mapState({
-                lat: state => state.lat,
-                lon: state => state.lon,
-                radius: state => state.radius,
-                photos: state => state.photos
-            }),
+            ...mapState([
+                'lat',
+                'lon',
+                'radius',
+                'photos'
+            ]),
             ...mapGetters([
                 'needUpdateMap'
             ])

@@ -26,13 +26,11 @@ namespace Pet.Services.Implemetations
             var requestMessage = GetRequestMessage(url, apiParams);
             using (var response = await _httpClient.SendAsync(requestMessage))
             {
+                var content = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<T>(content);
-                }
 
-                throw new Exception("bad api request status {content}");
+                throw new Exception($"bad api request status {content}");
             }
         }
 

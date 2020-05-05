@@ -3,9 +3,7 @@
     public class ServiceResult<T>
     {
         public T Data { get; set; }
-
         public ErrorMeta Error { get; set; }
-
         public bool IsSucceeded => Data != null && Error == null;
     }
 
@@ -21,8 +19,7 @@
             Code = code;
         }
 
-        public int Code { get; set; }
-        
+        public int Code { get; set; }      
         public string Message { get; set; }
     }
 }

@@ -28,12 +28,16 @@ namespace Pet.Hosting
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<FrontConfig>(_configuration.GetSection("frontConfig"));
-            services.Configure<VkConfig>(_configuration.GetSection("vkConfig"));
-            services.Configure<FlickrConfig>(_configuration.GetSection("flickrConfig"));
+
+            var vkConfig = new VkConfig();
+            _configuration.GetSection("vkConfig").Bind(vkConfig);
+            services.AddSingleton<IVkService, VkService>(x => new VkService(vkConfig));
+
+            var flickrConfig = new FlickrConfig();
+            _configuration.GetSection("flickrConfig").Bind(flickrConfig);
+            services.AddSingleton<IFlickrService, FlickrService>(x => new FlickrService(flickrConfig));
 
             services.AddSingleton<IDataService, DataService>();
-            services.AddSingleton<IVkService, VkService>();
-            services.AddSingleton<IFlickrService, FlickrService>();
 
             services.AddMvc()
                 .AddJsonOptions(x => x.UseCamelCasing(true));
@@ -50,7 +54,6 @@ namespace Pet.Hosting
                 app.UseStatusCodePagesWithRedirects("/Error?code={0}");
 
             app.UseStaticFiles();
-
             app.UseMvc();
         }
     }

@@ -11,7 +11,7 @@ export const search = ({ commit }, payload) => {
         .then(function (response) {
             commit('search', {
                 ...response.data,
-                newSearch: !payload.loadYet
+                newSearch: !payload.loadMore
             });
         })
         .catch(function (error) {

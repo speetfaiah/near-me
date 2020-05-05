@@ -34,7 +34,7 @@ namespace Pet.Hosting.Implemetations
                 {
                     Data = new PhotoList
                     {
-                        HasPhotosYet = vkPhotos.Response.Count > offset + vkPhotos.Response.Items.Count,
+                        HasMorePhotos = vkPhotos.Response.Count > offset + vkPhotos.Response.Items.Count,
                         Items = vkPhotos.Response.Items
                             .Select(PhotoMapper.FromVk)
                             .ToArray()
@@ -64,7 +64,7 @@ namespace Pet.Hosting.Implemetations
                 {
                     Data = new PhotoList
                     {
-                        HasPhotosYet = flickrPhotos.Photos.Page != flickrPhotos.Photos.Pages,
+                        HasMorePhotos = flickrPhotos.Photos.Page != flickrPhotos.Photos.Pages,
                         Items = flickrPhotos.Photos.Items
                             .Select(PhotoMapper.FromFlickr)
                             .ToArray()

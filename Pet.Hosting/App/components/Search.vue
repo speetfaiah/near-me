@@ -32,10 +32,10 @@
     export default {
         name: 'Search',
         computed: {
-            ...mapState({
-                loadYet: state => state.loadYet,
-                page: state => state.page
-            }),
+            ...mapState([
+                'loadMore',
+                'page'
+            ]),
             lat: {
                 get() {
                     return this.$store.state.lat
@@ -82,7 +82,7 @@
                     count: this.count,
                     page: this.page,
                     radius: this.radius,
-                    loadYet: this.loadYet
+                    loadMore: this.loadMore
                 });
             }
         }
