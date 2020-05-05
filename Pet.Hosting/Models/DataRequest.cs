@@ -1,6 +1,6 @@
 ﻿namespace Pet.Hosting.Models
 {
-    public class PhotosRequest
+    public class DataRequest
     {
         public string Query { get; set; }
         public decimal Lat { get; set; }

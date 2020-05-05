@@ -1,8 +1,8 @@
-﻿using Pet.Hosting.Models;
-using System;
+﻿using System;
 using System.Linq;
 using VkPhoto = Pet.Services.Models.Vk.PhotoInfo;
 using FlickrPhoto = Pet.Services.Models.Flickr.PhotoInfo;
+using Pet.Hosting.Models.Items;
 
 namespace Pet.Hosting.Mappers
 {

@@ -17,17 +17,17 @@ namespace Pet.Hosting.Controllers
 
         [HttpPost]
         [Route("vk")]
-        public async Task<JsonResult> VkPhotos([FromBody] PhotosRequest photosRequest)
+        public async Task<JsonResult> VkPhotos([FromBody] DataRequest dataRequest)
         {
-            var data = await _dataService.GetVkPhotosAsync(photosRequest);
+            var data = await _dataService.GetVkPhotosAsync(dataRequest);
             return Json(data);
         }
 
         [HttpPost]
         [Route("flickr")]
-        public async Task<JsonResult> FlickrPhotos([FromBody] PhotosRequest photosRequest)
+        public async Task<JsonResult> FlickrPhotos([FromBody] DataRequest dataRequest)
         {
-            var data = await _dataService.GetFlickrPhotosAsync(photosRequest);
+            var data = await _dataService.GetFlickrPhotosAsync(dataRequest);
             return Json(data);
         }
     }

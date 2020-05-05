@@ -1,7 +1,7 @@
 ﻿export default {
     updateStateProp(state, prop) {
         state[prop.name] = prop.value;
-        state.loadMore = false;
+        state.hasMore = false;
         state.page = 0;
     },
     search(state, payload) {
@@ -11,7 +11,7 @@
             state.photos.push(...payload.data.items);
         }
         
-        state.loadMore = payload.data.hasMorePhotos;
+        state.hasMore = payload.data.hasMore;
         state.page++;
     }
 }

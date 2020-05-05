@@ -33,7 +33,7 @@
         name: 'Search',
         computed: {
             ...mapState([
-                'loadMore',
+                'hasMore',
                 'page'
             ]),
             lat: {
@@ -82,7 +82,7 @@
                     count: this.count,
                     page: this.page,
                     radius: this.radius,
-                    loadMore: this.loadMore
+                    hasMore: this.hasMore
                 });
             }
         }

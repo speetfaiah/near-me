@@ -1,13 +1,7 @@
 ﻿using System;
 
-namespace Pet.Hosting.Models
+namespace Pet.Hosting.Models.Items
 {
-    public class PhotoList
-    {
-        public bool HasMorePhotos { get; set; }
-        public Photo[] Items { get; set; }
-    }
-
     public class Photo
     {
         public string Description { get; set; }

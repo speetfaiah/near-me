@@ -3,7 +3,7 @@
         <div class="message-section">
             <img v-for="image in photos" :src="image.smallPhotoUrl" :alt="image.description" />
         </div>
-        <button v-if="loadMore" @click="searchSubmit">More!</button>
+        <button v-if="hasMore" @click="searchSubmit">More!</button>
     </div>
 </template>
 
@@ -18,7 +18,7 @@
             'count',
             'page',
             'radius',
-            'loadMore',
+            'hasMore',
             'photos'
         ]),
         methods: {
@@ -33,7 +33,7 @@
                     count: this.count,
                     page: this.page,
                     radius: this.radius,
-                    loadMore: this.loadMore
+                    hasMore: this.hasMore
                 });
             }
         }

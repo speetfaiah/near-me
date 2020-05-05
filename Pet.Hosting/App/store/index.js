@@ -6,7 +6,8 @@ import mutations from './mutations'
 
 Vue.use(Vuex)
 
-const state = {   
+const state = {
+    query: "",
     lat: 60,
     lon: 60,
     count: 60,
@@ -22,7 +23,7 @@ const state = {
              smallPhotoUrl: "",
              bigPhotoUrl: "" 
         } */ ],
-    loadMore: false
+    hasMore: false
 }
 
 export default new Vuex.Store({

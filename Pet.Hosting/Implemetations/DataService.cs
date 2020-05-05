@@ -1,6 +1,7 @@
 ﻿using Pet.Hosting.Interfaces;
 using Pet.Hosting.Mappers;
 using Pet.Hosting.Models;
+using Pet.Hosting.Models.Items;
 using Pet.Services.Interfaces;
 using System;
 using System.Linq;
@@ -19,22 +20,22 @@ namespace Pet.Hosting.Implemetations
             _flickrService = flickrService;
         }
 
-        public async Task<ServiceResult<PhotoList>> GetVkPhotosAsync(PhotosRequest photosRequest)
+        public async Task<ServiceResult<ItemList<Photo>>> GetVkPhotosAsync(DataRequest dataRequest)
         {
             try
             {
-                var offset = photosRequest.Page * photosRequest.Count;
+                var offset = dataRequest.Page * dataRequest.Count;
                 var vkPhotos = await _vkService.GetPhotosAsync(
-                    photosRequest.Lat,
-                    photosRequest.Lon,
-                    photosRequest.Count,
+                    dataRequest.Lat,
+                    dataRequest.Lon,
+                    dataRequest.Count,
                     offset,
-                    photosRequest.Radius);
-                return new ServiceResult<PhotoList>
+                    dataRequest.Radius);
+                return new ServiceResult<ItemList<Photo>>
                 {
-                    Data = new PhotoList
+                    Data = new ItemList<Photo>
                     {
-                        HasMorePhotos = vkPhotos.Response.Count > offset + vkPhotos.Response.Items.Count,
+                        HasMore = vkPhotos.Response.Count > offset + vkPhotos.Response.Items.Count,
                         Items = vkPhotos.Response.Items
                             .Select(PhotoMapper.FromVk)
                             .ToArray()
@@ -43,28 +44,28 @@ namespace Pet.Hosting.Implemetations
             }
             catch (Exception ex)
             {
-                return new ServiceResult<PhotoList>
+                return new ServiceResult<ItemList<Photo>>
                 {
                     Error = new ErrorMeta(ex.Message)
                 };
             }
         }
 
-        public async Task<ServiceResult<PhotoList>> GetFlickrPhotosAsync(PhotosRequest photosRequest)
+        public async Task<ServiceResult<ItemList<Photo>>> GetFlickrPhotosAsync(DataRequest dataRequest)
         {
             try
             {
                 var flickrPhotos = await _flickrService.GetPhotosAsync(
-                    photosRequest.Lat,
-                    photosRequest.Lon,
-                    photosRequest.Page,
-                    photosRequest.Count,
-                    photosRequest.Radius / 1000);
-                return new ServiceResult<PhotoList>
+                    dataRequest.Lat,
+                    dataRequest.Lon,
+                    dataRequest.Page,
+                    dataRequest.Count,
+                    dataRequest.Radius / 1000);
+                return new ServiceResult<ItemList<Photo>>
                 {
-                    Data = new PhotoList
+                    Data = new ItemList<Photo>
                     {
-                        HasMorePhotos = flickrPhotos.Photos.Page != flickrPhotos.Photos.Pages,
+                        HasMore = flickrPhotos.Photos.Page != flickrPhotos.Photos.Pages,
                         Items = flickrPhotos.Photos.Items
                             .Select(PhotoMapper.FromFlickr)
                             .ToArray()
@@ -73,7 +74,7 @@ namespace Pet.Hosting.Implemetations
             }
             catch (Exception ex)
             {
-                return new ServiceResult<PhotoList>
+                return new ServiceResult<ItemList<Photo>>
                 {
                     Error = new ErrorMeta(ex.Message)
                 };
