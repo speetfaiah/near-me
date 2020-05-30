@@ -75,6 +75,7 @@ _[Ss]cripts
 *.ncrunchsolution
 *.dot[Cc]over
 appsettings.Development.json
+appsettings.Production.json
 node_modules/
 package-lock.json
 */wwwroot/assets/*
