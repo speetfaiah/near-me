@@ -2,16 +2,6 @@
     <div class="container">
         <form @submit="searchSubmit">
             <p>
-                <label>Lat:</label><br />
-                <input type="number" step="any" min="-90" max="90"
-                       v-model="lat" />
-            </p>
-            <p>
-                <label>Lon:</label><br />
-                <input type="number" step="any" min="-180" max="180"
-                       v-model="lon" />
-            </p>
-            <p>
                 <label>Count:</label><br />
                 <input type="number" min="10" max="500"
                        v-model="count" />
@@ -33,25 +23,11 @@
         name: 'Search',
         computed: {
             ...mapState([
+                'lat',
+                'lon',
                 'hasMore',
                 'page'
             ]),
-            lat: {
-                get() {
-                    return this.$store.state.lat
-                },
-                set(value) {
-                    this.updateStateProp({ name: 'lat', value: value })
-                }
-            },
-            lon: {
-                get() {
-                    return this.$store.state.lon
-                },
-                set(value) {
-                    this.updateStateProp({ name: 'lon', value: value })
-                }
-            },
             count: {
                 get() {
                     return this.$store.state.count

@@ -10,13 +10,13 @@
         height: 100%;
         padding: 0;
         margin: 0;
-        min-width: 300px;
-        min-height: 300px;
+        min-width: 500px;
+        min-height: 500px;
     }
 </style>
 
 <script>
-    import { mapActions, mapState, mapGetters } from 'vuex'
+    import { mapActions, mapState } from 'vuex'
 
     export default {
         name: 'Map',
@@ -28,33 +28,68 @@
         computed:
         {
             ...mapState([
-                'lat',
-                'lon',
                 'radius',
                 'photos'
             ]),
-            ...mapGetters([
-                'needUpdateMap'
-            ])
+            lat: {
+                get() {
+                    return this.$store.state.lat
+                },
+                set(value) {
+                    this.updateStateProp({ name: 'lat', value: value })
+                }
+            },
+            lon: {
+                get() {
+                    return this.$store.state.lon
+                },
+                set(value) {
+                    this.updateStateProp({ name: 'lon', value: value })
+                }
+            }
         },
         methods: {
             ...mapActions({
-                search: 'search'
+                search: 'search',
+                updateStateProp: 'updateStateProp'
             }),
             initMap: function () {
                 var self = this;
                 ymaps.ready(function () {
-                    self.map = new ymaps.Map("map", {
+                    var yMap = new ymaps.Map("map", {
                         center: [self.lat, self.lon],
                         zoom: 10
                     });
+
+                    var circle = new ymaps.Circle([
+                        [self.lat, self.lat],
+                        self.radius * 1000
+                    ], null, {
+                        draggable: true,
+                        fillColor: "#DB709377",
+                        strokeColor: "#990066",
+                        strokeOpacity: 0.8,
+                        strokeWidth: 3
+                    });
+
+                    circle.events.add([
+                        'dragend'
+                    ], function (e) {
+                        var coords = circle.geometry.getCoordinates();
+                        self.lat = coords[0];
+                        self.lon = coords[1];
+                    });
+
+                    yMap.geoObjects.add(circle);
+
+                    self.map = yMap;
                 });
-            },
-            updateMap: function () {
-                this.map.setCenter([this.lat, this.lon]);
             },
             updatePoints: function () {
                 if (this.photos) {
+
+                    //  this.map.geoObjects.removeAll();
+
                     var placemarkCollection = new ymaps.GeoObjectCollection(null, {
                         preset: 'islands#greenDotIconWithCaption'
                     });
@@ -74,9 +109,6 @@
             })
         },
         watch: {
-            needUpdateMap(newValue, oldValue) {
-                this.updateMap();
-            },
             photos(newValue, oldValue) {
                 this.updatePoints();
             }
