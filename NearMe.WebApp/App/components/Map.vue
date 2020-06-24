@@ -22,7 +22,8 @@
         name: 'Map',
         data: function () {
             return {
-                map: null
+                map: null,
+                circle: null
             }
         },
         computed:
@@ -61,10 +62,11 @@
                         zoom: 10
                     });
 
-                    var circle = new ymaps.Circle([
+                    var yCircle = new ymaps.Circle([
                         [self.lat, self.lat],
-                        self.radius * 1000
+                        self.radius
                     ], null, {
+                        geodesic: true,
                         draggable: true,
                         fillColor: "#DB709377",
                         strokeColor: "#990066",
@@ -72,23 +74,25 @@
                         strokeWidth: 3
                     });
 
-                    circle.events.add([
+                    yCircle.events.add([
                         'dragend'
                     ], function (e) {
-                        var coords = circle.geometry.getCoordinates();
+                        var coords = yCircle.geometry.getCoordinates();
                         self.lat = coords[0];
                         self.lon = coords[1];
                     });
 
-                    yMap.geoObjects.add(circle);
+                    yMap.geoObjects.add(yCircle);
 
                     self.map = yMap;
+                    self.circle = yCircle;
                 });
             },
             updatePoints: function () {
                 if (this.photos) {
 
-                    //  this.map.geoObjects.removeAll();
+                    // this.map.geoObjects.removeAll();
+                    // this.map.geoObjects.add(this.map.circle);
 
                     var placemarkCollection = new ymaps.GeoObjectCollection(null, {
                         preset: 'islands#greenDotIconWithCaption'
@@ -101,7 +105,13 @@
 
                     this.map.geoObjects.add(placemarkCollection);
                 }
-            }
+            },
+            updateCircle: function () {
+                this.circle.geometry.setRadius(this.radius);
+
+                // this.map.geoObjects.removeAll();
+                //this.map.geoObjects.add(this.map.circle);
+            },
         },
         mounted: function () {
             this.$nextTick(function () {
@@ -111,6 +121,9 @@
         watch: {
             photos(newValue, oldValue) {
                 this.updatePoints();
+            },
+            radius(newValue, oldValue) {
+                this.updateCircle();
             }
         }
     }

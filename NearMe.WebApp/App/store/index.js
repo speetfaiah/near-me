@@ -12,7 +12,7 @@ const state = {
     lon: 60,
     count: 60,
     page: 0,
-    radius: 1000,
+    radius: 5000,
     photos: [
         /* {
              description: "",

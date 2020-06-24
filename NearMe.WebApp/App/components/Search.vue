@@ -3,13 +3,15 @@
         <form @submit="searchSubmit">
             <p>
                 <label>Count:</label><br />
-                <input type="number" min="10" max="500"
-                       v-model="count" />
+                <input type="range" min="10" max="500" v-model="count" />
             </p>
             <p>
                 <label>Radius:</label><br />
-                <input type="number" min="1000" max="32000"
-                       v-model="radius" />
+                <template v-for="circleRadius in radiuses">
+                    <input type="radio" v-bind:value="circleRadius" v-model="radius">
+                    <label>{{circleRadius}}</label>
+                    <br />
+                </template>
             </p>
             <input type="submit" value="Search!" />
         </form>
@@ -21,6 +23,13 @@
 
     export default {
         name: 'Search',
+        data: function () {
+            return {
+                radiuses: [
+                    10, 100, 800, 5000, 6000, 50000
+                ]
+            }
+        },
         computed: {
             ...mapState([
                 'lat',
@@ -33,7 +42,7 @@
                     return this.$store.state.count
                 },
                 set(value) {
-                    this.updateStateProp({ name: 'count', value: value })
+                    this.updateStateProp({ name: 'count', value: parseInt(value) })
                 }
             },
             radius: {
@@ -41,7 +50,7 @@
                     return this.$store.state.radius
                 },
                 set(value) {
-                    this.updateStateProp({ name: 'radius', value: value })
+                    this.updateStateProp({ name: 'radius', value: parseInt(value) })
                 }
             }
         },
